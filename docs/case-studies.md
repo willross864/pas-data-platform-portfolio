@@ -8,15 +8,23 @@
 
 **Outcome:** Business users receive current data without rebuilding the reporting layer. Combined with related automations, the platform saves an estimated 400+ staff hours annually.
 
-## 2. Catalog QA at Ecommerce Scale
+## 2. PIM-to-Magento State Audit
 
-**Problem:** Every new product requires image, copy, identifier, and listing review. More than 4,000 SKUs were created in 2026, and source systems can disagree about product state.
+**Problem:** PIM and Magento can disagree about the live state of a catalog containing more than 100,000 SKUs.
 
-**Solution:** Built a normalized PIM-to-Magento audit that compares web and marketplace records, deduplicates source data, and writes daily exception snapshots.
+**Current implementation:** Magento product data is loaded in BigQuery, and the comparison framework normalizes identifiers and values before identifying missing listings and field-level mismatches. Loading the complete PIM dataset remains in progress.
 
-**Outcome:** Reviewers can focus on missing listings and field-level discrepancies rather than manually comparing complete exports.
+**Intended outcome:** Reviewers will work from an exception queue instead of manually comparing full PIM and Magento exports.
 
-## 3. Catalog-Wide Product Attributes
+## 3. Multimodal Listing QA
+
+**Problem:** Structured state comparison cannot determine whether images, titles, product copy, descriptions, and short descriptions accurately represent a product. More than 4,000 new SKUs were created in 2026, and the same quality controls must eventually scale across the catalog.
+
+**Planned solution:** Send listing content and images to the Claude API for discrepancy review, then use a second layer to resolve the correct product page and prepare an actionable support record.
+
+**Intended outcome:** Focus human review on likely content defects and give the support team the exact listing link needed for correction.
+
+## 4. Catalog-Wide Product Attributes
 
 **Problem:** More than 25,000 live listings need structured category attributes, but historical titles, descriptions, and specifications are inconsistent.
 
@@ -24,7 +32,7 @@
 
 **Outcome:** The first active category covers roughly 3,000 electric-guitar SKUs. The same framework is reusable across the full catalog.
 
-## 4. Promotion Operations
+## 5. Promotion Operations
 
 **Problem:** Promotion terms were distributed across dozens of brand workbooks and had to be translated into reminders, buyer reports, pricing actions, and PIM imports.
 
@@ -32,7 +40,7 @@
 
 **Outcome:** One source update can drive multiple downstream workflows across approximately 53 brand spreadsheets while preserving review and exception steps.
 
-## 5. Receipt-Lot Price Protection
+## 6. Receipt-Lot Price Protection
 
 **Problem:** Vendor credits can apply only to qualifying inventory receipts and vary by brand, cost, date, and available quantity.
 
@@ -40,7 +48,7 @@
 
 **Outcome:** The workflow improves cost and margin analysis without automating away the buyer's approval decision.
 
-## 6. Multi-Carrier Shipping Economics
+## 7. Multi-Carrier Shipping Economics
 
 **Problem:** Carrier invoices, ERP orders, tracking numbers, multi-box shipments, and bundled products did not share a clean item-level cost grain.
 

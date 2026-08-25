@@ -8,7 +8,8 @@ This repository is a public, sanitized portfolio. It documents the architecture 
 
 - Replaced recurring SalesPad and PIM exports, spreadsheet joins, and manual report distribution.
 - Saves an estimated **400+ staff hours annually** across reporting, reconciliation, pricing, catalog, and purchasing workflows.
-- Supports catalog QA for **4,000+ new SKUs in 2026**.
+- Building a PIM-to-Magento state audit across **100,000+ SKUs**.
+- Designing multimodal QA for product images and copy, with support-ready correction links.
 - Powers an AI-assisted product-attribute program across **25,000+ live listings**, beginning with roughly 3,000 electric-guitar SKUs.
 - Standardizes promotion workflows across approximately **53 brand spreadsheets**.
 - Gives purchasing and operations teams current, self-service data instead of static exports.
@@ -38,11 +39,15 @@ flowchart LR
     B --> H[Cloud Run services]
     B --> I[Apps Script workflows]
     B --> J[Claude API enrichment]
+    B --> O["PIM and Magento state audit (in progress)"]
+    B --> P["Multimodal content QA (planned)"]
 
     G --> K[History, metrics, and controls]
     H --> L[Email, files, and monitoring]
     I --> M[Sheets, calendars, and tasks]
     J --> N[Canonical product attributes]
+    O --> Q[State discrepancies]
+    P --> R[Support correction queue]
 ```
 
 The warehouse is the shared operational data layer. BigQuery handles storage, history, transformation, and reconciliation. Cloud Run handles scheduled or compute-heavy services. Apps Script provides spreadsheet-native interfaces for purchasing and operations. Google Sheets remains a delivery surface, not the system of record.
@@ -55,9 +60,13 @@ See [Architecture](docs/architecture.md) for the component-level design.
 
 Scheduled ingestion and refresh workflows replaced manual exports for sell-through, margin, inventory aging, inactive products, sub-items, tracking, new items, and item receipts. Business users receive current outputs through familiar Sheets and email workflows.
 
-### Catalog QA
+### PIM-to-Magento State Audit
 
-A daily PIM-to-channel audit normalizes product identifiers and values before identifying missing listings and inconsistent product data. The exception-based output focuses manual review on actionable records while supporting a catalog that added more than 4,000 SKUs in 2026.
+This work-in-progress audit is designed to compare the live state of more than 100,000 PIM SKUs with Magento and identify missing listings and field-level discrepancies. Magento data is loaded in BigQuery; loading the complete PIM dataset is the remaining prerequisite for full-catalog comparison.
+
+### Multimodal Catalog QA
+
+A separate planned workflow will send product images, titles, product copy, descriptions, and short descriptions to the Claude API for discrepancy review. A second resolution layer will identify the correct product page and create an actionable record for the support team. This extends QA beyond structured field comparison into listing-content quality.
 
 ### AI-Assisted Product Attributes
 
@@ -94,6 +103,8 @@ These examples use generic schemas and fictional names. They demonstrate the pro
 - Expand automated tests and deployment gates across all services.
 - Version the complete warehouse transformation layer.
 - Add stronger source-completeness checks before historical snapshots.
+- Complete the full PIM load and expand the PIM-to-Magento audit across 100,000+ SKUs.
+- Build multimodal image and copy QA with product-link resolution for support routing.
 - Continue building reusable category schemas for catalog-wide attribute enrichment.
 
 ## About

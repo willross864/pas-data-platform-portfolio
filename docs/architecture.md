@@ -27,7 +27,7 @@ BigQuery is divided into seven functional datasets:
 
 | Dataset | Responsibility |
 |---|---|
-| `Magento_Data` | Channel product records and catalog-audit snapshots |
+| `Magento_Data` | Channel product records and work-in-progress catalog-audit snapshots |
 | `Mappings` | Shared canonical mappings |
 | `PIM_Data` | Current product data and change history |
 | `SKU_Attributes` | AI output, canonical values, and review views |
@@ -71,6 +71,18 @@ Apps Script connects the platform to existing purchasing and operations workflow
 
 Each workflow has technical and user-facing SOPs so business users can operate it and technical stakeholders can troubleshoot it.
 
+## Catalog QA Patterns
+
+Catalog QA consists of two distinct systems:
+
+### Cross-System State Audit
+
+The state audit will compare more than 100,000 PIM SKUs with their live Magento state. It normalizes identifiers and values before reporting missing listings and field-level mismatches. Magento data is available in BigQuery, while the complete PIM dataset still needs to be loaded before full-catalog coverage is possible.
+
+### Multimodal Listing Review
+
+The planned content-QA layer will evaluate product images, titles, product copy, descriptions, and short descriptions through the Claude API. Its output will feed a second resolution step that identifies the correct product link and creates an actionable support record. This workflow is separate from both the structured state audit and the attribute-enrichment program.
+
 ## AI Enrichment Pattern
 
 The product-attribute system uses a repeatable staged design:
@@ -94,3 +106,5 @@ The next engineering phase is focused on reproducibility and automated validatio
 - Version all production SQL in a shared repository.
 - Combine dependent snapshot steps into single transactional scripts where possible.
 - Move remaining manually invoked warehouse procedures to service-account schedules with alerts.
+- Complete the full PIM ingestion required for 100,000+ SKU state comparison.
+- Add multimodal content-QA validation and product-link resolution.
